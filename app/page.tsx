@@ -46,7 +46,6 @@ export default function LoginPage() {
       }
 
       setSuccess("Login successful! Redirecting...")
-      localStorage.setItem("session", JSON.stringify(data.session))
 
       setTimeout(() => {
         window.location.href = role === "Owner" ? "/owner-dashboard" : "/employee-portal"

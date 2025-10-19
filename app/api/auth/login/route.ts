@@ -31,7 +31,23 @@ export async function POST(request: NextRequest) {
       loginTime: new Date().toISOString(),
     }
 
-    return NextResponse.json({ session }, { status: 200 })
+    // Set session cookie
+    const response = NextResponse.json({ session }, { status: 200 })
+    const expiryDate = new Date()
+    expiryDate.setHours(expiryDate.getHours() + 24)
+
+    response.cookies.set("truckflow_session", JSON.stringify({
+      ...session,
+      lastActivityTime: new Date().toISOString(),
+    }), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      expires: expiryDate,
+      path: "/",
+    })
+
+    return response
   } catch (error) {
     console.error("Login error:", error)
     return NextResponse.json({ message: "An error occurred during login" }, { status: 500 })
