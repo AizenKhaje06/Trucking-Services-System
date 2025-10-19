@@ -94,7 +94,6 @@ export default function EmployeePortal() {
     } catch (error) {
       console.error("Logout error:", error)
     }
-    window.location.href = "/"
   }
 
   const handleDeliveryCreated = () => {

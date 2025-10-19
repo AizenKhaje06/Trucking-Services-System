@@ -146,7 +146,6 @@ export default function OwnerDashboard() {
     } catch (error) {
       console.error("Logout error:", error)
     }
-    window.location.href = "/"
   }
 
   const getProfitTrendData = () => {
