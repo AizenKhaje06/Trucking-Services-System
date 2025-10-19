@@ -63,12 +63,21 @@ export default function OwnerDashboard() {
   >("overview")
 
   useEffect(() => {
-    const sessionData = localStorage.getItem("session")
-    if (sessionData) {
-      setSession(JSON.parse(sessionData))
-    }
+    fetchSession()
     fetchDashboardData()
   }, [])
+
+  const fetchSession = async () => {
+    try {
+      const response = await fetch("/api/auth/session")
+      if (response.ok) {
+        const sessionData = await response.json()
+        setSession(sessionData.session)
+      }
+    } catch (error) {
+      console.error("Failed to fetch session:", error)
+    }
+  }
 
   const fetchDashboardData = async () => {
     try {
@@ -131,8 +140,12 @@ export default function OwnerDashboard() {
     }
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem("session")
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" })
+    } catch (error) {
+      console.error("Logout error:", error)
+    }
     window.location.href = "/"
   }
 

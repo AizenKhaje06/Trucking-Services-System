@@ -38,14 +38,23 @@ export default function EmployeePortal() {
   const [activeTab, setActiveTab] = useState<"overview" | "record" | "history">("overview")
 
   useEffect(() => {
-    const sessionData = localStorage.getItem("session")
-    if (sessionData) {
-      setSession(JSON.parse(sessionData))
-      const parsed = JSON.parse(sessionData)
-      fetchEmployeeData(parsed.userId)
-    }
-    setLoading(false)
+    fetchSession()
   }, [])
+
+  const fetchSession = async () => {
+    try {
+      const response = await fetch("/api/auth/session")
+      if (response.ok) {
+        const sessionData = await response.json()
+        setSession(sessionData.session)
+        fetchEmployeeData(sessionData.session.userId)
+      }
+    } catch (error) {
+      console.error("Failed to fetch session:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const fetchEmployeeData = async (employeeId: string) => {
     try {
@@ -79,8 +88,12 @@ export default function EmployeePortal() {
     }
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem("session")
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" })
+    } catch (error) {
+      console.error("Logout error:", error)
+    }
     window.location.href = "/"
   }
 
