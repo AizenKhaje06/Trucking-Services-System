@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -45,6 +46,7 @@ interface DashboardStats {
 }
 
 export default function OwnerDashboard() {
+  const router = useRouter()
   const [session, setSession] = useState<Session | null>(null)
   const [materials, setMaterials] = useState<Material[]>([])
   const [deliveries, setDeliveries] = useState<Delivery[]>([])
@@ -143,6 +145,7 @@ export default function OwnerDashboard() {
   const handleLogout = async () => {
     try {
       await fetch("/api/auth/logout", { method: "POST" })
+      router.push("/")
     } catch (error) {
       console.error("Logout error:", error)
     }

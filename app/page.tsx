@@ -48,7 +48,7 @@ export default function LoginPage() {
       setSuccess("Login successful! Redirecting...")
 
       setTimeout(() => {
-        window.location.href = role === "Owner" ? "/owner-dashboard" : "/employee-portal"
+        window.location.replace(role === "Owner" ? "/owner-dashboard" : "/employee-portal")
       }, 1000)
     } catch (err) {
       setError("An error occurred. Please try again.")

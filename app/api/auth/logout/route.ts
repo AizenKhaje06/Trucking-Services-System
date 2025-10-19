@@ -3,9 +3,9 @@ import { destroySession } from "@/lib/auth"
 
 export async function POST(request: NextRequest) {
   try {
-    // Clear the session cookie and redirect to login
+    // Clear the session cookie
     await destroySession()
-    return NextResponse.redirect(new URL("/", request.url))
+    return NextResponse.json({ message: "Logged out successfully" }, { status: 200 })
   } catch (error) {
     console.error("Logout error:", error)
     return NextResponse.json({ message: "Failed to logout" }, { status: 500 })
