@@ -3,8 +3,6 @@ import { destroySession } from "@/lib/auth"
 
 export async function POST(request: NextRequest) {
   try {
-    await destroySession()
-
     // Clear the session cookie and redirect to login
     const response = NextResponse.json({ message: "Logged out successfully" }, { status: 200 })
     response.cookies.set("truckflow_session", "", {
